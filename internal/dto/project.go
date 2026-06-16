@@ -3,17 +3,20 @@ package dto
 import (
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type (
+	// HeaderAttrID ...
 	HeaderAttrID string
 
+	// HeaderAttribute ...
 	HeaderAttribute struct {
 		ID   HeaderAttrID `json:"attrId" bson:"attrId"`
 		Name string       `json:"attrName" bson:"attrName"`
 	}
 
+	// ProjectWork ...
 	ProjectWork struct {
 		WbsCode       string   `json:"wbs_code" bson:"wbsCode"`
 		Name          string   `json:"name" bson:"name"`
@@ -21,25 +24,33 @@ type (
 		PreviousWorks []string `json:"prev_works" bson:"prevWorks"`
 	}
 
+	// Project ...
 	Project struct {
-		ID              primitive.ObjectID `json:"id" bson:"_id"`
-		Title           string             `json:"title" bson:"title"`
-		StartDate       time.Time          `json:"projectStartDate" bson:"projectStartDate"`
-		DateFormat      string             `json:"dateDisplayTemplate" bson:"dateDisplayTemplate"`
-		IsSuppressZeros bool               `json:"isSuppressZeros" bson:"isSuppressZeros"`
-		HeaderAttrs     []HeaderAttribute  `json:"projectHeaderAttributes" bson:"projectHeaderAttributes"`
-		Works           []ProjectWork      `json:"projectWorksList" bson:"projectWorksList"`
+		ID              bson.ObjectID     `json:"id" bson:"_id"`
+		Title           string            `json:"title" bson:"title"`
+		StartDate       time.Time         `json:"projectStartDate" bson:"projectStartDate"`
+		DateFormat      string            `json:"dateDisplayTemplate" bson:"dateDisplayTemplate"`
+		IsSuppressZeros bool              `json:"isSuppressZeros" bson:"isSuppressZeros"`
+		HeaderAttrs     []HeaderAttribute `json:"projectHeaderAttributes" bson:"projectHeaderAttributes"`
+		Works           []ProjectWork     `json:"projectWorksList" bson:"projectWorksList"`
 	}
 )
 
 const (
-	HeaderAttrCode            = HeaderAttrID("wbs_code")
-	HeaderAttrName            = HeaderAttrID("work_name")
-	HeaderAttrLength          = HeaderAttrID("length")
+	// HeaderAttrCode ...
+	HeaderAttrCode = HeaderAttrID("wbs_code")
+	//HeaderAttrName ...
+	HeaderAttrName = HeaderAttrID("work_name")
+	// HeaderAttrLength ...
+	HeaderAttrLength = HeaderAttrID("length")
+	// HeaderAttrPercentComplete ...
 	HeaderAttrPercentComplete = HeaderAttrID("percent_complete")
-	HeaderAttrStartDate       = HeaderAttrID("start_date")
-	HeaderAttrFinishDate      = HeaderAttrID("finish_date")
-	HeaderAttrPrevWorks       = HeaderAttrID("prev_works")
+	// HeaderAttrStartDate ...
+	HeaderAttrStartDate = HeaderAttrID("start_date")
+	// HeaderAttrFinishDate ...
+	HeaderAttrFinishDate = HeaderAttrID("finish_date")
+	// HeaderAttrPrevWorks ...
+	HeaderAttrPrevWorks = HeaderAttrID("prev_works")
 )
 
 // ProjectTemplate ...

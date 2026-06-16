@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// NewProjectFromTemplate ...
 func (impl *Implementation) NewProjectFromTemplate(c *gin.Context) {
 	ctx := c.Request.Context()
 

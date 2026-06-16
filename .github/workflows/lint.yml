@@ -1,0 +1,34 @@
+name: golangci-lint
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  golangci-lint:
+    name: runner / golangci-lint
+    runs-on: ubuntu-latest
+    # Добавляем права для работы аннотаций в Pull Request
+    permissions:
+      # Нужно для клонирования кода (checkout)
+      contents: read
+      # Нужно для создания аннотаций и комментариев в PR
+      pull-requests: write
+      checks: write
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.10'
+          cache: false
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: 2.12.2

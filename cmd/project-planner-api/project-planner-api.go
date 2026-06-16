@@ -15,20 +15,23 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	client := app_init.MongoClient(ctx)
+	client := app_init.MongoClient()
 	defer func() {
 		if err := client.Disconnect(ctx); err != nil {
 			log.Fatalf("Ошибка при отключении: %v", err)
 		}
 	}()
-	db := client.Database(app_init.MONGO_DB)
+	db := client.Database(app_init.MongoDB)
 
 	app := gin.Default()
 
 	projectSrv := projects.NewService(db)
 	apiImpl := project_planner_api.NewImplementation(projectSrv)
-	app.GET("/project/:id", apiImpl.FindProjectById)
+	app.GET("/project/:id", apiImpl.FindProjectByID)
 	app.POST("/project/new", apiImpl.NewProjectFromTemplate)
 
-	app.Run(":8080")
+	err := app.Run(":8080")
+	if err != nil {
+		panic(err)
+	}
 }

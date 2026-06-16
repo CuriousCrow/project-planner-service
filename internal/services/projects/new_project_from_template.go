@@ -6,12 +6,13 @@ import (
 	"log"
 
 	"github.com/CuriousCrow/project-planner-service/internal/dto"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
+// NewProjectFromTemplate ...
 func (s service) NewProjectFromTemplate(ctx context.Context) (dto.Project, error) {
 	newProject := dto.ProjectTemplate
-	newProject.ID = primitive.NewObjectID()
+	newProject.ID = bson.NewObjectID()
 	newProject.Title = "project " + newProject.ID.Hex()
 
 	insertResult, err := s.db.Collection("projects").InsertOne(ctx, newProject)

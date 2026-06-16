@@ -4,19 +4,20 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
-func (impl *Implementation) FindProjectById(c *gin.Context) {
+// FindProjectByID ...
+func (impl *Implementation) FindProjectByID(c *gin.Context) {
 	ctx := c.Request.Context()
 
 	hexID := c.Param("id")
-	projectID, err := primitive.ObjectIDFromHex(hexID)
+	projectID, err := bson.ObjectIDFromHex(hexID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
-	project, err := impl.service.FindProjectById(ctx, projectID)
+	project, err := impl.service.FindProjectByID(ctx, projectID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
