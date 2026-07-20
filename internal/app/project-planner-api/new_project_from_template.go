@@ -1,20 +1,20 @@
 package project_planner_api
 
 import (
-	"net/http"
+	"context"
 
+	"github.com/CuriousCrow/project-planner-service/internal/dto"
+	"github.com/CuriousCrow/project-planner-service/typed_error"
 	"github.com/gin-gonic/gin"
 )
 
 // NewProjectFromTemplate ...
-func (impl *Implementation) NewProjectFromTemplate(c *gin.Context) {
-	ctx := c.Request.Context()
+func (impl *Implementation) NewProjectFromTemplate(ctx context.Context, _ gin.Params, _ EmptyRequest) (*dto.Project, error) {
 
 	newProject, err := impl.service.NewProjectFromTemplate(ctx)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return &dto.Project{}, typed_error.NewServerError(err)
 	}
 
-	c.JSON(http.StatusOK, newProject)
+	return &newProject, nil
 }

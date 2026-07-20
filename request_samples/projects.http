@@ -1,5 +1,63 @@
-GET http://localhost:8080/project/6a2f253e6ef0bb03d018f836
+GET http://localhost:8081/project/6a2f253e6ef0bb03d018f836
 
 
 ###
-POST http://localhost:8080/project/new
+POST http://localhost:8081/project/new
+
+###
+GET http://localhost:8081/project/wrapper?project_id=Opimah
+###
+POST http://localhost:8081/project/wrapper
+
+{
+    "project_id": "My test"
+}
+
+###
+PUT http://localhost:8081/project/6a2f253e6ef0bb03d018f835
+
+{
+  "id": "6a2f253e6ef0bb03d018f836",
+  "title": "My updated project",
+  "projectStartDate": "0001-01-01T00:00:00Z",
+  "dateDisplayTemplate": "yy/MM/dd",
+  "isSuppressZeros": true,
+  "projectHeaderAttributes": [
+    {
+      "attrId": "wbs_code",
+      "attrName": "WBS"
+    },
+    {
+      "attrId": "work_name",
+      "attrName": "Work"
+    },
+    {
+      "attrId": "length",
+      "attrName": "Len. (d)"
+    },
+    {
+      "attrId": "percent_complete",
+      "attrName": "% done"
+    },
+    {
+      "attrId": "start_date",
+      "attrName": "Start at"
+    },
+    {
+      "attrId": "finish_date",
+      "attrName": "Finish at"
+    },
+    {
+      "attrId": "prev_works",
+      "attrName": "Prev."
+    }
+  ],
+  "projectWorksList": [
+    {
+      "wbs_code": "",
+      "name": "Project \"Creation of a billing information system\" (DEV-26-10)",
+      "length": 0,
+      "prev_works": null
+    }
+  ]
+}

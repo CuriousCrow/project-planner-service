@@ -1,0 +1,41 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Project Planner API",
+    "description": "Минимальный пример API для проверки Swagger UI",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/project/:id": {
+      "get": {
+        "summary": "Получение данных проекта по идентификатору",
+        "description": "Возвращает json представление данных проекта",
+        "tags": [
+          "project"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "ok"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

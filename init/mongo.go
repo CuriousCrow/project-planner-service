@@ -3,6 +3,7 @@ package init
 import (
 	"log"
 
+	"github.com/CuriousCrow/project-planner-service/configs"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
@@ -19,15 +20,16 @@ const (
 )
 
 // MongoClient ...
-func MongoClient() *mongo.Client {
+func MongoClient(appConfig *configs.AppConfig) *mongo.Client {
+
 	credential := options.Credential{
-		Username:   MongoUser,
-		Password:   MongoPass,
+		Username:   appConfig.Mongo.Username,
+		Password:   appConfig.Mongo.Password,
 		AuthSource: "admin", // База данных, где зарегистрирован пользователь
 	}
 
 	clientOptions := options.Client().
-		ApplyURI(MongoDbURL).
+		ApplyURI(appConfig.Mongo.Url).
 		SetAuth(credential)
 
 	client, err := mongo.Connect(clientOptions)

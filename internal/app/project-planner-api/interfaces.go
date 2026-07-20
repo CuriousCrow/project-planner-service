@@ -11,4 +11,5 @@ import (
 type ProjectService interface {
 	FindProjectByID(ctx context.Context, projectID bson.ObjectID) (dto.Project, error)
 	NewProjectFromTemplate(ctx context.Context) (dto.Project, error)
+	UpdateProject(ctx context.Context, project dto.Project) error
 }

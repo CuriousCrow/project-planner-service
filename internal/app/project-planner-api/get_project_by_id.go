@@ -1,29 +1,27 @@
 package project_planner_api
 
 import (
-	"net/http"
+	"context"
 
+	"github.com/CuriousCrow/project-planner-service/internal/dto"
+	"github.com/CuriousCrow/project-planner-service/typed_error"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 // FindProjectByID ...
-func (impl *Implementation) FindProjectByID(c *gin.Context) {
-	ctx := c.Request.Context()
+func (impl *Implementation) FindProjectByID(ctx context.Context, params gin.Params, _ EmptyRequest) (*dto.Project, error) {
 
-	hexID := c.Param("id")
+	hexID, _ := params.Get("id")
 	projectID, err := bson.ObjectIDFromHex(hexID)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return &dto.Project{}, typed_error.New(typed_error.BadRequest, "invalid id")
 	}
 
 	project, err := impl.service.FindProjectByID(ctx, projectID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		return
+		return &dto.Project{}, typed_error.New(typed_error.ServerError, err.Error())
 	}
 
-	c.JSON(http.StatusOK, project)
+	return &project, nil
 }

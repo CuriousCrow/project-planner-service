@@ -1,5 +1,12 @@
 package project_planner_api
 
+// EmptyRequest ...
+type EmptyRequest struct {
+}
+
+// EmptyResponse ...
+type EmptyResponse struct{}
+
 // Implementation ...
 type Implementation struct {
 	service ProjectService
