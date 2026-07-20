@@ -1,24 +1,39 @@
-name: Test My Home Runner
+name: Docker Go Deploy
 
-# Запускать сценарий при каждом пуше в ветку main или master
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
 
 jobs:
-  test-job:
-    # КРИТИЧЕСКИ ВАЖНО: указываем GitHub искать именно ваш self-hosted раннер
+  deploy:
     runs-on: self-hosted
 
     steps:
-      - name: Проверяем исходный код проекта
+      # 1. Скачиваем свежий код
+      - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Проверяем окружение на домашнем сервере
-        run: |
-          echo "Привет с домашнего сервера!"
-          echo "Текущий пользователь:" && whoami
-          echo "Версия Docker:" && docker --version || echo "Docker не установлен"
+      # 2. Собираем Docker-образ
+      - name: Build Docker Image
+        run: docker build -t my-go-app:latest .
 
-      - name: Финальный тест
-        run: echo "Ура, всё работает отлично!"
+      # 3. Перезапускаем контейнер на домашнем сервере
+      - name: Deploy Container
+        run: |
+          # Останавливаем старый контейнер, если он существует
+          docker stop my-go-app-container || true
+
+          # Удаляем старый контейнер, чтобы освободить имя
+          docker rm my-go-app-container || true
+
+          # Запускаем новый контейнер
+          # -d: в фоне, --name: имя контейнера, -p: проброс портов (внешний:внутренний)
+          docker run -d \
+            --name my-go-app-container \
+            --restart always \
+            -p 8080:8080 \
+            my-go-app:latest
+
+      # 4. Очистка неиспользуемых старых слоев (чтобы диск сервера не забивался)
+      - name: Clean up old Docker images
+        run: docker image prune -f
