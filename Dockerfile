@@ -11,7 +11,7 @@ RUN go mod download
 COPY . .
 
 # Компилируем оптимизированный бинарник под Linux
-RUN CGO_ENABLED=0 GOOS=linux go build -o myapp ./cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o myapp ./cmd/project-planner-api/project-planner-api.go
 
 # --- Этап 2: Финальный минимальный образ ---
 FROM alpine:latest
