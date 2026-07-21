@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/CuriousCrow/project-planner-service/cmd/project-planner-api/wrappers"
 	"github.com/CuriousCrow/project-planner-service/configs"
 	app_init "github.com/CuriousCrow/project-planner-service/init"
 	project_planner_api "github.com/CuriousCrow/project-planner-service/internal/app/project-planner-api"
@@ -46,9 +47,9 @@ func main() {
 	projectSrv := projects.NewService(db)
 	apiImpl := project_planner_api.NewImplementation(projectSrv)
 
-	app.GET("/project/:id", GetHandlerWrapper(apiImpl.FindProjectByID))
-	app.PUT("/project/:id", HandlerWrapper(apiImpl.UpdateProject))
-	app.POST("/project/new", HandlerWrapper(apiImpl.NewProjectFromTemplate))
+	app.GET("/project/:id", wrappers.GetHandlerWrapper(apiImpl.FindProjectByID))
+	app.PUT("/project/:id", wrappers.HandlerWrapper(apiImpl.UpdateProject))
+	app.POST("/project/new", wrappers.HandlerWrapper(apiImpl.NewProjectFromTemplate))
 
 	err = app.Run(fmt.Sprintf(":%d", appConfig.App.Port))
 	if err != nil {

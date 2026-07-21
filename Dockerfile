@@ -11,7 +11,7 @@ RUN go mod download
 COPY . .
 
 # Компилируем оптимизированный бинарник под Linux
-RUN CGO_ENABLED=0 GOOS=linux go build -o myapp ./cmd/project-planner-api/project-planner-api.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o project-planner-api ./cmd/project-planner-api/project-planner-api.go
 
 # --- Этап 2: Финальный минимальный образ ---
 FROM alpine:latest
@@ -19,10 +19,11 @@ FROM alpine:latest
 WORKDIR /root/
 
 # Переносим скомпилированный файл из первого этапа
-COPY --from=builder /app/myapp .
+COPY --from=builder /app/project-planner-api .
+COPY --from=builder /app/config.yaml .
 
 # Открываем порт, который слушает ваше Go-приложение (например, 8080)
 EXPOSE 8081
 
 # Запуск приложения
-CMD ["./myapp"]
+CMD ["./project-planner-api"]
