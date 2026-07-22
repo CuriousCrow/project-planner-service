@@ -1,28 +1,39 @@
-version: "3.8"
+version: '3.8'
+
 services:
-  mongodb:
-    image: mongo
-    container_name: mongodb
-    ports:
-      - 27017:27017
-    volumes:
-      - data:/data
+  # Сервис Mongo DB
+  mongo-server:
+    image: mongo:latest
+    container_name: mongodb_container
+    restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=rootuser
-      - MONGO_INITDB_ROOT_PASSWORD=rootpass
-  mongo-express:
-    image: mongo-express
-    container_name: mongo-express
+      MONGO_INITDB_ROOT_USERNAME: rootuser
+      MONGO_INITDB_ROOT_PASSWORD: rootpass
+      MONGO_INITDB_DATABASE: mydb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+
+  # Сервис вашего приложения на Go
+  service-app:
+    build: .
+    container_name: service_container
     restart: always
     ports:
-      - 8081:8081
+      - "8081:8081"
     environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=rootuser
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=rootpass
-      - ME_CONFIG_MONGODB_SERVER=mongodb
+      test_env: "hello"
+    depends_on:
+      - mongo-server
+    networks:
+      - app-network
+
 volumes:
-  data: {}
+  mongo_data:
 
 networks:
-  default:
-    name: mongodb_network
+  app-network:
+    driver: bridge

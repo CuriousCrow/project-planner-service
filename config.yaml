@@ -2,7 +2,7 @@ app:
   name: project-planner
   port: 8081
 mongo:
-  url: mongodb://localhost:27017
+  url: mongodb://mongo-server:27017
   name: mydb
   username: rootuser
   password: rootpass
